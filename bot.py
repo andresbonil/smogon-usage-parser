@@ -2,6 +2,7 @@ import discord
 import json
 import nodejs
 import os
+import pypokedex
 
 from discord.ext import commands
 from discord import app_commands
@@ -34,10 +35,8 @@ async def shutdown(req):
 
 
 @bot.tree.command(description="test_data")
-async def test_data(
-    interaction: discord.interactions,
-    pokemon: str,
-):
+async def test_data(req, pokemon: str):
+    p = pypokedex.get(name=pokemon)
     nodejs.call(
         [
             "dist/index.js",
@@ -60,27 +59,44 @@ async def test_data(
             for ability in entry["abilities"]:
                 temp[ability["ability"]] = ability["percent"]
             entry["abilities"] = temp
-            #print(temp)
+            # print(temp)
             temp = {}
             for item in entry["items"]:
                 temp[item["item"]] = item["percent"]
             entry["items"] = temp
-            pokemonKey[entry["name"]] = {  
-                "types": entry["types"], #list of 1 or 2
-                "stats": entry["stats"], #dictionary with keys of hp, atk, def, spa, spd, spe
-                "abilities": entry["abilities"], #list of dictionaries with ability and usage percent 
-                "raw_count": entry["raw_count"], #int, possibly sample size? 
-                "percent": entry["percent"], #overall usage percentage
-                "ranking": entry["ranking"], #usage ranking
-                "viability": entry["viability"], #letter grade ranking viability? not sure 
-                "items": entry["items"], #dictionary with key of item name
-                "spreads": entry["spreads"], #list of dictionaries with spreads, return top 3 
-                "moves": entry["moves"] #dictioary with keys moves, type, and percent
-    }
-        
-        await interaction.response.send_message(stats[pokemon])
+            pokemonKey[entry["name"]] = {
+                "types": entry["types"],  # list of 1 or 2
+                "stats": entry[
+                    "stats"
+                ],  # dictionary with keys of hp, atk, def, spa, spd, spe
+                "abilities": entry[
+                    "abilities"
+                ],  # list of dictionaries with ability and usage percent
+                "raw_count": entry["raw_count"],  # int, possibly sample size?
+                "percent": entry["percent"],  # overall usage percentage
+                "ranking": entry["ranking"],  # usage ranking
+                "viability": entry[
+                    "viability"
+                ],  # letter grade ranking viability? not sure
+                "items": entry["items"],  # dictionary with key of item name
+                "spreads": entry[
+                    "spreads"
+                ],  # list of dictionaries with spreads, return top 3
+                "moves": entry["moves"],  # dictioary with keys moves, type, and percent
+            }
+        try:
+            e = discord.Embed(
+                title="{} Type(s)".format(pokemon),
+                description=pokemonKey[pokemon]["types"],
+            )
+            e.set_thumbnail(url=p.sprites[0]["default"])
+            # e.set_image(url=p.sprites["front_default"])
+            await req.channel.send(embed=e)
+            # await interaction.response.send_message(pokemonKey[pokemon]["types"])
+        except:
+            await req.response.send_message(f"Invalid Pokemon name or data not found!")
     except:
-        await interaction.response.send_message(f"Could not find stats or open file.")
+        await req.response.send_message(f"Could not find stats or open file.")
 
 
 @bot.tree.command(description="request_data")
