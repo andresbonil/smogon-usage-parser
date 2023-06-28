@@ -3,6 +3,7 @@ import json
 import nodejs
 import os
 import pypokedex
+import requests
 
 from discord.ext import commands
 from discord import app_commands
@@ -36,7 +37,6 @@ async def shutdown(req):
 
 @bot.tree.command(description="test_data")
 async def test_data(req, pokemon: str):
-    p = pypokedex.get(name=pokemon)
     nodejs.call(
         [
             "dist/index.js",
@@ -84,17 +84,24 @@ async def test_data(req, pokemon: str):
                 ],  # list of dictionaries with spreads, return top 3
                 "moves": entry["moves"],  # dictioary with keys moves, type, and percent
             }
-        try:
-            e = discord.Embed(
-                title="{} Type(s)".format(pokemon),
-                description=pokemonKey[pokemon]["types"],
-            )
-            e.set_thumbnail(url=p.sprites[0]["default"])
-            # e.set_image(url=p.sprites["front_default"])
-            await req.channel.send(embed=e)
-            # await interaction.response.send_message(pokemonKey[pokemon]["types"])
-        except:
-            await req.response.send_message(f"Invalid Pokemon name or data not found!")
+        if pokemon not in pokemonKey:
+            await req.response.send_message(f"Pokemon is not in this dataset!")
+            return
+        else:
+            try:
+                e = discord.Embed(
+                    title="{} Type(s)".format(pokemon),
+                    description=pokemonKey[pokemon]["types"],
+                )
+                url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.lower()
+                response = requests.get(url)
+                response = response.json()
+                e.set_thumbnail(url=response["sprites"]["front_default"])
+                # e.set_image(url=p.sprites["front_default"])
+                await req.channel.send(embed=e)
+                # await interaction.response.send_message(pokemonKey[pokemon]["types"])
+            except:
+                await req.response.send_message(f"Invalid Pokemon name or data not found!")
     except:
         await req.response.send_message(f"Could not find stats or open file.")
 
