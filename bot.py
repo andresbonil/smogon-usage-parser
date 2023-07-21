@@ -89,19 +89,28 @@ async def test_data(req, pokemon: str):
             return
         else:
             try:
-                e = discord.Embed(
-                    title="{} Type(s)".format(pokemon),
-                    description=pokemonKey[pokemon]["types"],
-                )
-                url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.lower()
-                response = requests.get(url)
-                response = response.json()
-                e.set_thumbnail(url=response["sprites"]["front_default"])
-                # e.set_image(url=p.sprites["front_default"])
-                await req.channel.send(embed=e)
-                # await interaction.response.send_message(pokemonKey[pokemon]["types"])
+                embed = discord.Embed(title="Pokemon", description="Pokemon Statistics")
+
+                embed.add_field(name="Type(s)", value="Type1\nType2 (optional)")
+                embed.add_field(name="Ability Usage", value="Ability1\nABility2")
+
+                await req.send(embed=embed)
+
+                # e = discord.Embed(
+                #     title="{} Type(s)".format(pokemon),
+                #     description=pokemonKey[pokemon]["types"],
+                # )
+                # url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.lower()
+                # response = requests.get(url)
+                # response = response.json()
+                # e.set_thumbnail(url=response["sprites"]["front_default"])
+                # # e.set_image(url=p.sprites["front_default"])
+                # await req.channel.send(embed=e)
+                # # await interaction.response.send_message(pokemonKey[pokemon]["types"])
             except:
-                await req.response.send_message(f"Invalid Pokemon name or data not found!")
+                await req.response.send_message(
+                    f"Invalid Pokemon name or data not found!"
+                )
     except:
         await req.response.send_message(f"Could not find stats or open file.")
 
