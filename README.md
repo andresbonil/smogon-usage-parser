@@ -1,7 +1,7 @@
 # Smogon Usage Parser Discord Bot 
 
-This project utilizes the information from Griffin Ledingham's Smogon Usage Parser to create an interactive Discord bot, utilizing discord.py, which displays Pokemon information 
-and usage statistics based on information obtained through the original application.
+This project utilizes the information from Griffin Ledingham's Smogon Usage Parser to create an interactive Discord bot, in discord.py, which displays Pokemon information 
+and usage statistics.
 
 # Usage
 
