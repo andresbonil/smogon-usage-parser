@@ -12,7 +12,8 @@ Load data: ```/request_data format date rating```
 Query data: ```/test_data pokemonName```
     Example: ```/test_data Incineroar```
 
-    ![image](https://github.com/andresbonil/smogon-usage-parser/assets/56232911/5d1f8022-df19-4a89-809e-aa7aff8e8f00)
+![image](https://github.com/andresbonil/smogon-usage-parser/assets/56232911/36723eb8-3c59-4553-9d66-fc4bd5736788)
+
 
 
 Shutdown: ```/shutdown```
