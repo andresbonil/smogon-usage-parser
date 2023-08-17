@@ -10,6 +10,7 @@ Load data: ```/request_data format date rating```
     Example: ```/request_data gen7vgc2019ultraseries 2019-08 1760```
 Query data: ```/test_data pokemonName```
     Example: ```/test_data Incineroar```
+    
     ![image](https://github.com/andresbonil/smogon-usage-parser/assets/56232911/f2f18ac6-2acf-4021-95bd-0301122ef028)
 
 Shutdown: ```/shutdown```
