@@ -29,5 +29,6 @@ collaborative teambuilding and gather and present Smogon statistics in one place
 # Credits
 
 Griffin Ledingham - original usage parser https://github.com/GriffinLedingham/smogon-usage-parser
+
 PokeAPI - sprite source https://pokeapi.co/
 
