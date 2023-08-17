@@ -10,12 +10,12 @@ Currently, the bot supports the following commands:
 Load data: ```/request_data format date rating```
     
     
-    Example: ```/request_data gen7vgc2019ultraseries 2019-08 1760```
+Example: ```/request_data gen7vgc2019ultraseries 2019-08 1760```
 
 Query data: ```/test_data pokemonName```
     
     
-    Example: ```/test_data Incineroar```
+Example: ```/test_data Incineroar```
 
 ![image](https://github.com/andresbonil/smogon-usage-parser/assets/56232911/36723eb8-3c59-4553-9d66-fc4bd5736788)
 
