@@ -29,7 +29,7 @@ async def shutdown(req):
         shutdown_embed = discord.Embed(
             title="Bot Update", description="Bot is now shutting down.", color=0x8EE6DD
         )
-        await req.channel.send(embed=shutdown_embed)
+        await req.channel.respond(embed=shutdown_embed)
         await bot.close()
     else:
         return
@@ -84,17 +84,38 @@ async def test_data(req, pokemon: str):
                 ],  # list of dictionaries with spreads, return top 3
                 "moves": entry["moves"],  # dictioary with keys moves, type, and percent
             }
+        #print(pokemon)
+        #print(pokemonKey[pokemon])
         if pokemon not in pokemonKey:
-            await req.response.send_message(f"Pokemon is not in this dataset!")
+            await req.response.send_message(f"Pokemon is not in this dataset! Double check Pokemon name!")
             return
         else:
             try:
-                embed = discord.Embed(title="Pokemon", description="Pokemon Statistics")
+                url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.lower()
+                response = requests.get(url)
+                response = response.json()
+                embed = discord.Embed(title=pokemon, description="Pokemon Statistics")
+                
+                embed.set_thumbnail(url=response["sprites"]["front_default"])         
+                types = pokemonKey[pokemon]["types"]
+                # if len(types) > 1:
+                #    
+                # else:
+                #     embed.add_field(name="Type", value="Type1: {}".format(types[0].capitalize()), inline=False) 
+                typestr = ""
+                if len(types) == 1:
+                    typestr += types[0].capitalize()
+                    embed.add_field(name="Type", value=typestr, inline=False)
+                else:
+                    typestr += types[0].capitalize() + ", " + types[1].capitalize()
+                    embed.add_field(name="Types", value=typestr, inline=False)
+                abilities = pokemonKey[pokemon]["abilities"]    
+                abilitystr = ""
+                for ability in abilities:
+                    abilitystr += "{}: {}% Usage".format( ability, abilities[ability]) + "\n"
+                embed.add_field(name="Ability Usage", value=abilitystr, inline =False)
 
-                embed.add_field(name="Type(s)", value="Type1\nType2 (optional)")
-                embed.add_field(name="Ability Usage", value="Ability1\nABility2")
-
-                await req.send(embed=embed)
+                await req.channel.send(embed=embed)
 
                 # e = discord.Embed(
                 #     title="{} Type(s)".format(pokemon),
@@ -106,10 +127,10 @@ async def test_data(req, pokemon: str):
                 # e.set_thumbnail(url=response["sprites"]["front_default"])
                 # # e.set_image(url=p.sprites["front_default"])
                 # await req.channel.send(embed=e)
-                # # await interaction.response.send_message(pokemonKey[pokemon]["types"])
+                # await interaction.response.send_message(pokemonKey[pokemon]["types"])
             except:
                 await req.response.send_message(
-                    f"Invalid Pokemon name or data not found!"
+                    f"Failed to create embed!"
                 )
     except:
         await req.response.send_message(f"Could not find stats or open file.")
