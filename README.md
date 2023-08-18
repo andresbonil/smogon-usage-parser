@@ -3,6 +3,10 @@
 This project utilizes the information from Griffin Ledingham's Smogon Usage Parser to create an interactive Discord bot, in discord.py, which displays Pokemon information 
 and usage statistics.
 
+The current implementation is a work in progress, but the goal of the project is to create an easy-to-use, informative tool for competitive Pokemon players to promote 
+collaborative teambuilding and gather and present Smogon statistics in one place.
+
+
 # Usage
 
 Currently, the bot supports the following commands:
@@ -22,9 +26,6 @@ Example: ```/test_data Incineroar```
 
 
 Shutdown: ```/shutdown```
-
-The current implementation is a work in progress, but the goal of the project is to create an easy-to-use, informative tool for competitive Pokemon players to promote 
-collaborative teambuilding and gather and present Smogon statistics in one place.
 
 # Credits
 
